@@ -26,8 +26,8 @@ public class MapController {
         Map<String, Object> result = new HashMap<>();
         result.put("latitude", lat);
         result.put("longitude", lng);
-        result.put("cafeCount", cafeCount);
-        result.put("foodCount", foodCount);
+        result.put("cafeCount", cafeCount); //카페 수
+        result.put("foodCount", foodCount); //음식점 수
         result.put("densityScore", score);
 
         return result;

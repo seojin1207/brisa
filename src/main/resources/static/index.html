@@ -6,6 +6,27 @@
     <title>brisa</title>
     <style>
         body { margin: 0; padding: 20px; font-family: 'Malgun Gothic', sans-serif; }
+        /* [추가] 검색창 영역 스타일 */
+        .search-area {
+            margin-bottom: 12px;
+            display: flex;
+            gap: 8px;
+        }
+        .search-area input {
+            width: 280px;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .search-area button {
+            padding: 8px 16px;
+            background-color: #FEE500;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
         /* 지도를 담을 영역의 너비와 높이를 반드시 지정해야 화면에 보입니다 */
         #map {
             width: 100%;
@@ -18,6 +39,13 @@
 <body>
 
 <h2>지도 테스트</h2>
+
+<!-- 지역/주소/장소 검색 입력창 -->
+<div class="search-area">
+    <input type="text" id="keyword" placeholder="지역, 주소, 역 이름 입력 " onkeypress="if(event.key==='Enter') searchPlace()">
+    <button type="button" onclick="searchPlace()">검색</button>
+</div>
+
 <!-- 1. 지도가 표시될 div 영역 -->
 <div id="map"></div>
 
@@ -38,12 +66,44 @@
     // 지도 생성 및 객체 리턴
     const map = new kakao.maps.Map(container, options);
 
-    // [선택 사항] 중간 지점 마커 표시 예시
+    //중간 지점 마커 표시
     const markerPosition = new kakao.maps.LatLng(37.497942, 127.027621);
     const marker = new kakao.maps.Marker({
         position: markerPosition
     });
     marker.setMap(map); // 지도에 마커 올리기
+
+    // [장소 검색 객체 및 말풍선(인포윈도우) 생성
+    const ps = new kakao.maps.services.Places();
+    const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+    // [추가] 입력한 키워드로 장소를 검색해 기존 마커와 지도를 이동시키는 함수
+    function searchPlace() {
+        const keyword = document.getElementById('keyword').value.trim();
+        if (!keyword) {
+            alert('검색할 지역이나 주소를 입력해주세요.');
+            return;
+        }
+
+        ps.keywordSearch(keyword, function(data, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                const firstPlace = data[0];
+                const moveLatLon = new kakao.maps.LatLng(firstPlace.y, firstPlace.x);
+
+                // 기존 마커 위치를 검색된 위치로 이동 및 지도 중심 변경
+                marker.setPosition(moveLatLon);
+                map.setCenter(moveLatLon);
+
+                // 검색된 장소 이름 말풍선 표시
+                infowindow.setContent('<div style="padding:5px 10px;font-size:13px;">' + firstPlace.place_name + '</div>');
+                infowindow.open(map, marker);
+            } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+                alert('검색 결과가 없습니다.');
+            } else {
+                alert('검색 중 오류가 발생했습니다.');
+            }
+        });
+    }
 </script>
 
 </body>
