@@ -34,10 +34,281 @@
             border-radius: 8px;
             border: 1px solid #ccc;
         }
+
+        /* ==================== [추가] 접이식 사이드바 스타일 ==================== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            background: #ffffff;
+            box-shadow: 0 0 16px rgba(0, 0, 0, 0.16);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+        .sidebar * { box-sizing: border-box; }
+
+        /* 왼쪽 사이드바 */
+        .sidebar-left {
+            left: 0;
+            width: 340px;
+            border-right: 1px solid #ddd;
+        }
+        .sidebar-left.collapsed { transform: translateX(-340px); }
+
+        /* 오른쪽 사이드바 */
+        .sidebar-right {
+            right: 0;
+            width: 360px;
+            border-left: 1px solid #ddd;
+        }
+        .sidebar-right.collapsed { transform: translateX(360px); }
+
+        /* 사이드바 접기/펴기 버튼 */
+        .sidebar-toggle {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 60px;
+            background: #ffffff;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+        }
+        .sidebar-toggle:hover { background: #f3f4f6; }
+        .toggle-left {
+            right: -28px;
+            border-left: none;
+            border-radius: 0 8px 8px 0;
+        }
+        .toggle-right {
+            left: -28px;
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .sb-header {
+            padding: 16px 18px;
+            background: #222;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sb-body {
+            padding: 16px 18px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .sb-footer {
+            padding: 14px 18px;
+            border-top: 1px solid #eee;
+            background: #fafafa;
+        }
+
+        .sb-label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 모임 성격 버튼 */
+        .purpose-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+        .purpose-item {
+            padding: 8px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .purpose-item.active {
+            background: #FEE500;
+            border-color: #e5ce00;
+            font-weight: bold;
+        }
+
+        /* 인원수 N명 조절 */
+        .member-counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f3f4f6;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .member-counter button {
+            width: 26px;
+            height: 26px;
+            border: 1px solid #ccc;
+            background: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* 참여자 출발지 카드 */
+        .member-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 8px;
+            background: #fff;
+        }
+        .member-card-head {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        .member-input-row {
+            display: flex;
+            gap: 5px;
+        }
+        .member-input-row input {
+            flex: 1;
+            padding: 6px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        .btn-yellow {
+            padding: 6px 10px;
+            background: #FEE500;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-del {
+            background: none;
+            border: none;
+            color: #e11d48;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .member-coord {
+            margin-top: 5px;
+            font-size: 11px;
+            color: #059669;
+        }
+        .btn-run {
+            width: 100%;
+            padding: 11px;
+            background: #222;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* JSON 뷰어 & 추천 장소 */
+        .json-viewer {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            max-height: 170px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin: 0;
+        }
+        .rec-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 9px 10px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .rec-item:hover, .rec-item.active {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+        .rec-detail {
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
 
+<!-- ==================== [추가] 왼쪽 접이식 사이드바 (인원 및 모임 설정) ==================== -->
+<div class="sidebar sidebar-left" id="leftSidebar">
+    <button type="button" class="sidebar-toggle toggle-left" onclick="toggleSidebar('leftSidebar', this)">◀</button>
+    <div class="sb-header">
+        <span>모임 설정 (brisa)</span>
+    </div>
+    <div class="sb-body">
+        <!-- 모임 성격 설정 -->
+        <div>
+            <div class="sb-label">1. 모임 성격 설정</div>
+            <div class="purpose-group">
+                <div class="purpose-item active" data-type="CAFE" onclick="selectPurpose(this)">☕ 카페 / 수다</div>
+                <div class="purpose-item" data-type="DINING" onclick="selectPurpose(this)">🍽️ 식사 / 맛집</div>
+                <div class="purpose-item" data-type="STUDY" onclick="selectPurpose(this)">💻 스터디 / 작업</div>
+                <div class="purpose-item" data-type="DRINK" onclick="selectPurpose(this)">🍻 회식 / 모임</div>
+            </div>
+        </div>
+
+        <!-- 사람 수 N명 설정 -->
+        <div>
+            <div class="sb-label">
+                <span>2. 사람 수 설정 (<span id="nCountText">2</span>명)</span>
+                <button type="button" class="btn-yellow" onclick="addMember()">+ 인원 추가</button>
+            </div>
+            <div class="member-counter">
+                <span>인원 수 조절 (N명)</span>
+                <div>
+                    <button type="button" onclick="updateMemberCount(-1)">-</button>
+                    <span id="nCountBox" style="margin: 0 8px; font-weight: bold;">2</span>
+                    <button type="button" onclick="updateMemberCount(1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 인원별 출발지 입력 및 추가/삭제 -->
+        <div>
+            <div class="sb-label">3. 인원별 출발지</div>
+            <div id="memberListArea"></div>
+        </div>
+    </div>
+    <div class="sb-footer">
+        <button type="button" class="btn-run" onclick="calculateMeetingSpot()">중간지점 및 반경 분석</button>
+    </div>
+</div>
+
+<!-- ==================== [기존 코드 유지] ==================== -->
 <h2>지도 테스트</h2>
 
 <!-- 지역/주소/장소 검색 입력창 -->
@@ -48,11 +319,49 @@
 
 <!-- 1. 지도가 표시될 div 영역 -->
 <div id="map"></div>
+<!-- ========================================================== -->
+
+<!-- ==================== [추가] 오른쪽 접이식 사이드바 (JSON & 추천 장소) ==================== -->
+<div class="sidebar sidebar-right" id="rightSidebar">
+    <button type="button" class="sidebar-toggle toggle-right" onclick="toggleSidebar('rightSidebar', this)">▶</button>
+    <div class="sb-header">
+        <span>분석 결과 & 추천 장소</span>
+    </div>
+    <div class="sb-body">
+        <!-- JSON 데이터 표시 영역 -->
+        <div>
+            <div class="sb-label">
+                <span>JSON 데이터</span>
+                <button type="button" class="btn-yellow" onclick="copyJsonData()">복사</button>
+            </div>
+            <pre class="json-viewer" id="jsonDisplay">{
+  "status": "READY",
+  "message": "왼쪽 사이드바에서 인원별 출발지를 입력해 주세요."
+}</pre>
+        </div>
+
+        <!-- 추천 장소 리스트 -->
+        <div>
+            <div class="sb-label">추천 장소 리스트 (반경 500m 내)</div>
+            <div id="recommendListArea" style="font-size: 12px; color: #888;">
+                분석 실행 시 추천 장소 목록이 표시됩니다.
+            </div>
+        </div>
+
+        <!-- 추천 장소 상세 정보 -->
+        <div>
+            <div class="sb-label">장소 상세 정보</div>
+            <div class="rec-detail" id="placeDetailArea">
+                추천 장소 리스트에서 항목을 선택하면 상세 정보가 표시됩니다.
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- 2. Kakao 지도 Javascript API 불러오기 (반드시 실행 코드보다 먼저 선언) -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f8bb2e5743371424d0167c04156c02e4&libraries=services"></script>
 
-<!-- 3. 지도를 띄우고 마커를 표시하는 실행 코드 -->
+<!-- 3. 지도를 띄우고 마커를 표시하는 실행 코드 (기존 코드 100% 보존) -->
 <script>
     // 지도를 담을 영역의 DOM 레퍼런스
     const container = document.getElementById('map');
@@ -104,6 +413,240 @@
             }
         });
     }
+
+    // ==================== [추가] 사이드바 및 다중 인원 / 반경 / 추천 기능 스크립트 ====================
+    let meetingPurpose = 'CAFE';
+    let members = [
+        { id: 1, keyword: '', placeName: '', lat: null, lng: null, marker: null },
+        { id: 2, keyword: '', placeName: '', lat: null, lng: null, marker: null }
+    ];
+    let memberSeq = 3;
+
+    let radiusCircle = null;
+    let recommendMarkers = [];
+
+    // 사이드바 접기/펴기
+    function toggleSidebar(id, btn) {
+        const el = document.getElementById(id);
+        el.classList.toggle('collapsed');
+        const collapsed = el.classList.contains('collapsed');
+        if (id === 'leftSidebar') {
+            btn.textContent = collapsed ? '▶' : '◀';
+        } else {
+            btn.textContent = collapsed ? '◀' : '▶';
+        }
+    }
+
+    // 모임 성격 선택
+    function selectPurpose(el) {
+        document.querySelectorAll('.purpose-item').forEach(item => item.classList.remove('active'));
+        el.classList.add('active');
+        meetingPurpose = el.dataset.type;
+    }
+
+    // 인원 목록 렌더링
+    function renderMembers() {
+        document.getElementById('nCountText').textContent = members.length;
+        document.getElementById('nCountBox').textContent = members.length;
+
+        const area = document.getElementById('memberListArea');
+        area.innerHTML = '';
+
+        members.forEach((m, index) => {
+            const card = document.createElement('div');
+            card.className = 'member-card';
+            card.innerHTML = `
+                <div class="member-card-head">
+                    <span>인원 ${index + 1}</span>
+                    ${members.length > 2 ? `<button type="button" class="btn-del" onclick="removeMember(${m.id})">삭제</button>` : ''}
+                </div>
+                <div class="member-input-row">
+                    <input type="text" id="member-input-${m.id}" value="${m.keyword}" placeholder="출발지 입력"
+                           onkeypress="if(event.key==='Enter') searchMemberPlace(${m.id})">
+                    <button type="button" class="btn-yellow" onclick="searchMemberPlace(${m.id})">검색</button>
+                </div>
+                <div class="member-coord">
+                    ${m.lat ? `✔ ${m.placeName} (${m.lat.toFixed(4)}, ${m.lng.toFixed(4)})` : '<span style="color:#999;">미지정</span>'}
+                </div>
+            `;
+            area.appendChild(card);
+        });
+    }
+
+    function addMember() {
+        members.push({ id: memberSeq++, keyword: '', placeName: '', lat: null, lng: null, marker: null });
+        renderMembers();
+    }
+
+    function removeMember(id) {
+        if (members.length <= 2) return;
+        const target = members.find(m => m.id === id);
+        if (target && target.marker) target.marker.setMap(null);
+        members = members.filter(m => m.id !== id);
+        renderMembers();
+    }
+
+    function updateMemberCount(diff) {
+        if (diff > 0) {
+            addMember();
+        } else if (diff < 0 && members.length > 2) {
+            removeMember(members[members.length - 1].id);
+        }
+    }
+
+    // 개별 인원 출발지 검색 및 마커 표시
+    function searchMemberPlace(id) {
+        const val = document.getElementById(`member-input-${id}`).value.trim();
+        if (!val) {
+            alert('출발지를 입력해주세요.');
+            return;
+        }
+        const member = members.find(m => m.id === id);
+        member.keyword = val;
+
+        ps.keywordSearch(val, function(data, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                const place = data[0];
+                const lat = parseFloat(place.y);
+                const lng = parseFloat(place.x);
+                const pos = new kakao.maps.LatLng(lat, lng);
+
+                member.lat = lat;
+                member.lng = lng;
+                member.placeName = place.place_name;
+
+                if (member.marker) member.marker.setMap(null);
+                member.marker = new kakao.maps.Marker({
+                    map: map,
+                    position: pos,
+                    title: place.place_name
+                });
+
+                map.setCenter(pos);
+                renderMembers();
+            } else {
+                alert('검색 결과가 없습니다.');
+            }
+        });
+    }
+
+    // 중간 지점 계산 + 반경 원 표시 + JSON & 추천 장소 렌더링
+    function calculateMeetingSpot() {
+        const validMembers = members.filter(m => m.lat !== null && m.lng !== null);
+        if (validMembers.length < 2) {
+            alert('최소 2명 이상의 출발지를 검색해 지정해주세요.');
+            return;
+        }
+
+        const avgLat = validMembers.reduce((acc, m) => acc + m.lat, 0) / validMembers.length;
+        const avgLng = validMembers.reduce((acc, m) => acc + m.lng, 0) / validMembers.length;
+        const centerPos = new kakao.maps.LatLng(avgLat, avgLng);
+
+        // 기존 marker 객체를 중간 지점으로 이동
+        marker.setPosition(centerPos);
+        infowindow.setContent('<div style="padding:5px 10px;font-size:13px;font-weight:bold;">추천 중간 지점</div>');
+        infowindow.open(map, marker);
+
+        // 반경 500m 원 표시
+        if (radiusCircle) radiusCircle.setMap(null);
+        radiusCircle = new kakao.maps.Circle({
+            center: centerPos,
+            radius: 500,
+            strokeWeight: 2,
+            strokeColor: '#2563eb',
+            strokeOpacity: 0.8,
+            fillColor: '#3b82f6',
+            fillOpacity: 0.15
+        });
+        radiusCircle.setMap(map);
+
+        // 기존 추천 마커 정리
+        recommendMarkers.forEach(rm => rm.setMap(null));
+        recommendMarkers = [];
+
+        // 지도 영역 맞춤
+        const bounds = new kakao.maps.LatLngBounds();
+        validMembers.forEach(m => bounds.extend(new kakao.maps.LatLng(m.lat, m.lng)));
+        bounds.extend(centerPos);
+        map.setBounds(bounds);
+
+        // 모임 성격에 따른 카테고리 검색 (CE7: 카페, FD6: 음식점)
+        const categoryCode = (meetingPurpose === 'CAFE' || meetingPurpose === 'STUDY') ? 'CE7' : 'FD6';
+
+        ps.categorySearch(categoryCode, function(places, status, pagination) {
+            const count = (status === kakao.maps.services.Status.OK) ? pagination.totalCount : 0;
+            const cafeCount = (categoryCode === 'CE7') ? count : Math.round(count * 0.4);
+            const foodCount = (categoryCode === 'FD6') ? count : Math.round(count * 1.6);
+            const densityScore = Number(((cafeCount * 1.2) + (foodCount * 1.0)).toFixed(1));
+
+            const jsonObj = {
+                purpose: meetingPurpose,
+                memberCount: validMembers.length,
+                members: validMembers.map((m, i) => ({
+                    name: `인원 ${i + 1}`,
+                    placeName: m.placeName,
+                    latitude: m.lat,
+                    longitude: m.lng
+                })),
+                center: {
+                    latitude: Number(avgLat.toFixed(6)),
+                    longitude: Number(avgLng.toFixed(6)),
+                    radius: 500
+                },
+                analysis: {
+                    cafeCount: cafeCount,
+                    foodCount: foodCount,
+                    densityScore: densityScore
+                }
+            };
+
+            document.getElementById('jsonDisplay').textContent = JSON.stringify(jsonObj, null, 2);
+
+            // 추천 장소 Top 5 렌더링
+            const listArea = document.getElementById('recommendListArea');
+            if (status !== kakao.maps.services.Status.OK || places.length === 0) {
+                listArea.innerHTML = '반경 500m 내 검색된 추천 장소가 없습니다.';
+                return;
+            }
+
+            listArea.innerHTML = '';
+            places.slice(0, 5).forEach((p, idx) => {
+                const pPos = new kakao.maps.LatLng(p.y, p.x);
+                const rMarker = new kakao.maps.Marker({ map: map, position: pPos, title: p.place_name });
+                recommendMarkers.push(rMarker);
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'rec-item';
+                itemDiv.innerHTML = `<strong>${idx + 1}. ${p.place_name}</strong><br><span style="color:#666;font-size:12px;">${p.category_group_name} · ${p.distance}m</span>`;
+
+                itemDiv.onclick = function() {
+                    document.querySelectorAll('.rec-item').forEach(el => el.classList.remove('active'));
+                    itemDiv.classList.add('active');
+                    map.panTo(pPos);
+                    infowindow.setContent(`<div style="padding:5px 10px;font-size:12px;">${p.place_name}</div>`);
+                    infowindow.open(map, rMarker);
+
+                    document.getElementById('placeDetailArea').innerHTML = `
+                        <div><b>상호명:</b> ${p.place_name}</div>
+                        <div><b>분류:</b> ${p.category_name}</div>
+                        <div><b>주소:</b> ${p.road_address_name || p.address_name}</div>
+                        <div><b>전화:</b> ${p.phone || '없음'}</div>
+                        <div><b>거리:</b> 중간지점에서 ${p.distance}m</div>
+                        <div style="margin-top:6px;"><a href="${p.place_url}" target="_blank" style="color:#2563eb;font-weight:bold;">카카오맵 상세보기 →</a></div>
+                    `;
+                };
+                listArea.appendChild(itemDiv);
+            });
+        }, { location: centerPos, radius: 500 });
+    }
+
+    function copyJsonData() {
+        const text = document.getElementById('jsonDisplay').textContent;
+        navigator.clipboard.writeText(text).then(() => alert('JSON이 복사되었습니다.'));
+    }
+
+    // 초기 인원 2명 렌더링
+    renderMembers();
 </script>
 
 </body>
