@@ -6,7 +6,6 @@
     <title>brisa</title>
     <style>
         body { margin: 0; padding: 20px; font-family: 'Malgun Gothic', sans-serif; }
-        /* [추가] 검색창 영역 스타일 */
         .search-area {
             margin-bottom: 12px;
             display: flex;
@@ -27,7 +26,6 @@
             font-weight: bold;
             cursor: pointer;
         }
-        /* 지도를 담을 영역의 너비와 높이를 반드시 지정해야 화면에 보입니다 */
         #map {
             width: 100%;
             height: 500px;
@@ -35,7 +33,7 @@
             border: 1px solid #ccc;
         }
 
-        /* ==================== [추가] 접이식 사이드바 스타일 ==================== */
+        /* ==================== 접이식 사이드바 스타일 ==================== */
         .sidebar {
             position: fixed;
             top: 0;
@@ -50,7 +48,6 @@
         }
         .sidebar * { box-sizing: border-box; }
 
-        /* 왼쪽 사이드바 */
         .sidebar-left {
             left: 0;
             width: 340px;
@@ -58,15 +55,13 @@
         }
         .sidebar-left.collapsed { transform: translateX(-340px); }
 
-        /* 오른쪽 사이드바 */
         .sidebar-right {
             right: 0;
-            width: 360px;
+            width: 380px;
             border-left: 1px solid #ddd;
         }
-        .sidebar-right.collapsed { transform: translateX(360px); }
+        .sidebar-right.collapsed { transform: translateX(380px); }
 
-        /* 사이드바 접기/펴기 버튼 */
         .sidebar-toggle {
             position: absolute;
             top: 50%;
@@ -133,13 +128,14 @@
             gap: 6px;
         }
         .purpose-item {
-            padding: 8px;
+            padding: 9px 6px;
             border: 1px solid #ccc;
             background: #f9f9f9;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             text-align: center;
+            line-height: 1.35;
         }
         .purpose-item.active {
             background: #FEE500;
@@ -147,7 +143,6 @@
             font-weight: bold;
         }
 
-        /* 인원수 N명 조절 */
         .member-counter {
             display: flex;
             justify-content: space-between;
@@ -167,7 +162,6 @@
             font-weight: bold;
         }
 
-        /* 참여자 출발지 카드 */
         .member-card {
             border: 1px solid #e0e0e0;
             border-radius: 6px;
@@ -226,7 +220,6 @@
             cursor: pointer;
         }
 
-        /* JSON 뷰어 & 추천 장소 */
         .json-viewer {
             background: #1e1e1e;
             color: #d4d4d4;
@@ -234,16 +227,55 @@
             border-radius: 6px;
             font-family: Consolas, monospace;
             font-size: 12px;
-            max-height: 170px;
+            max-height: 165px;
             overflow-y: auto;
             white-space: pre-wrap;
             margin: 0;
         }
+
+        /* 카테고리 필터 탭 & 그룹 헤더 스타일 */
+        .cat-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+        .cat-tab {
+            padding: 4px 8px;
+            font-size: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            background: #f8fafc;
+            cursor: pointer;
+            color: #334155;
+        }
+        .cat-tab.active {
+            background: #222;
+            color: #fff;
+            border-color: #222;
+            font-weight: bold;
+        }
+        .cat-section {
+            margin-bottom: 14px;
+        }
+        .cat-section-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #1e293b;
+            background: #f1f5f9;
+            padding: 6px 10px;
+            border-left: 3px solid #2563eb;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
         .rec-item {
             border: 1px solid #e0e0e0;
             border-radius: 6px;
-            padding: 9px 10px;
-            margin-bottom: 6px;
+            padding: 8px 10px;
+            margin-bottom: 5px;
             cursor: pointer;
             font-size: 13px;
         }
@@ -259,29 +291,39 @@
             font-size: 12px;
             line-height: 1.6;
         }
+
+        /* 인포윈도우 줄바꿈(칸 밀림) 방지용 스타일 */
+        .iw-box {
+            padding: 8px 12px;
+            font-size: 12px;
+            line-height: 1.45;
+            white-space: nowrap;
+            min-width: max-content;
+            color: #222;
+        }
     </style>
 </head>
 <body>
 
-<!-- ==================== [추가] 왼쪽 접이식 사이드바 (인원 및 모임 설정) ==================== -->
+<!-- ==================== 왼쪽 접이식 사이드바 (인원 및 모임 설정) ==================== -->
 <div class="sidebar sidebar-left" id="leftSidebar">
     <button type="button" class="sidebar-toggle toggle-left" onclick="toggleSidebar('leftSidebar', this)">◀</button>
     <div class="sb-header">
         <span>모임 설정 (brisa)</span>
     </div>
     <div class="sb-body">
-        <!-- 모임 성격 설정 -->
+        <!-- 1. 모임 성격 4개 카테고리 -->
         <div>
             <div class="sb-label">1. 모임 성격 설정</div>
             <div class="purpose-group">
-                <div class="purpose-item active" data-type="CAFE" onclick="selectPurpose(this)">☕ 카페 / 수다</div>
-                <div class="purpose-item" data-type="DINING" onclick="selectPurpose(this)">🍽️ 식사 / 맛집</div>
-                <div class="purpose-item" data-type="STUDY" onclick="selectPurpose(this)">💻 스터디 / 작업</div>
-                <div class="purpose-item" data-type="DRINK" onclick="selectPurpose(this)">🍻 회식 / 모임</div>
+                <div class="purpose-item active" data-type="DINING" onclick="selectPurpose(this)">🍽️ 식사 / 맛집 / 회식</div>
+                <div class="purpose-item" data-type="CAFE" onclick="selectPurpose(this)">☕ 카페 / 수다 / 스터디</div>
+                <div class="purpose-item" data-type="SHOPPING" onclick="selectPurpose(this)">🛍️ 쇼핑</div>
+                <div class="purpose-item" data-type="CULTURE" onclick="selectPurpose(this)">🎮 놀거리 / 문화생활</div>
             </div>
         </div>
 
-        <!-- 사람 수 N명 설정 -->
+        <!-- 2. 사람 수 N명 설정 -->
         <div>
             <div class="sb-label">
                 <span>2. 사람 수 설정 (<span id="nCountText">2</span>명)</span>
@@ -297,38 +339,33 @@
             </div>
         </div>
 
-        <!-- 인원별 출발지 입력 및 추가/삭제 -->
+        <!-- 3. 인원별 출발지 -->
         <div>
             <div class="sb-label">3. 인원별 출발지</div>
             <div id="memberListArea"></div>
         </div>
     </div>
     <div class="sb-footer">
-        <button type="button" class="btn-run" onclick="calculateMeetingSpot()">중간지점 및 반경 분석</button>
+        <button type="button" class="btn-run" onclick="calculateMeetingSpot()">대중교통 균등 중심지 분석</button>
     </div>
 </div>
 
-<!-- ==================== [기존 코드 유지] ==================== -->
 <h2>지도 테스트</h2>
 
-<!-- 지역/주소/장소 검색 입력창 -->
 <div class="search-area">
     <input type="text" id="keyword" placeholder="지역, 주소, 역 이름 입력 " onkeypress="if(event.key==='Enter') searchPlace()">
     <button type="button" onclick="searchPlace()">검색</button>
 </div>
 
-<!-- 1. 지도가 표시될 div 영역 -->
 <div id="map"></div>
-<!-- ========================================================== -->
 
-<!-- ==================== [추가] 오른쪽 접이식 사이드바 (JSON & 추천 장소) ==================== -->
+<!-- ==================== 오른쪽 접이식 사이드바 (JSON & 카테고리별 추천 장소) ==================== -->
 <div class="sidebar sidebar-right" id="rightSidebar">
     <button type="button" class="sidebar-toggle toggle-right" onclick="toggleSidebar('rightSidebar', this)">▶</button>
     <div class="sb-header">
         <span>분석 결과 & 추천 장소</span>
     </div>
     <div class="sb-body">
-        <!-- JSON 데이터 표시 영역 -->
         <div>
             <div class="sb-label">
                 <span>JSON 데이터</span>
@@ -340,15 +377,14 @@
 }</pre>
         </div>
 
-        <!-- 추천 장소 리스트 -->
         <div>
-            <div class="sb-label">추천 장소 리스트 (반경 500m 내)</div>
+            <div class="sb-label">카테고리별 추천 장소 (반경 800m 내 전체)</div>
+            <div id="categoryFilterBar" class="cat-filter-bar"></div>
             <div id="recommendListArea" style="font-size: 12px; color: #888;">
-                분석 실행 시 추천 장소 목록이 표시됩니다.
+                분석 실행 시 카테고리별로 정렬된 추천 장소 목록이 표시됩니다.
             </div>
         </div>
 
-        <!-- 추천 장소 상세 정보 -->
         <div>
             <div class="sb-label">장소 상세 정보</div>
             <div class="rec-detail" id="placeDetailArea">
@@ -358,35 +394,28 @@
     </div>
 </div>
 
-<!-- 2. Kakao 지도 Javascript API 불러오기 (반드시 실행 코드보다 먼저 선언) -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f8bb2e5743371424d0167c04156c02e4&libraries=services"></script>
 
-<!-- 3. 지도를 띄우고 마커를 표시하는 실행 코드 (기존 코드 100% 보존) -->
 <script>
-    // 지도를 담을 영역의 DOM 레퍼런스
-    const container = document.getElementById('map');
+    const BACKEND_BASE_URL = 'http://localhost:8080/api/map';
 
-    // 지도를 생성할 때 필요한 기본 옵션 (초기 중심좌표: 강남역 예시)
+    const container = document.getElementById('map');
     const options = {
         center: new kakao.maps.LatLng(37.497942, 127.027621),
-        level: 3 // 지도의 확대 레벨 (숫자가 작을수록 확대)
+        level: 3
     };
 
-    // 지도 생성 및 객체 리턴
     const map = new kakao.maps.Map(container, options);
 
-    //중간 지점 마커 표시
     const markerPosition = new kakao.maps.LatLng(37.497942, 127.027621);
     const marker = new kakao.maps.Marker({
         position: markerPosition
     });
-    marker.setMap(map); // 지도에 마커 올리기
+    marker.setMap(map);
 
-    // [장소 검색 객체 및 말풍선(인포윈도우) 생성
     const ps = new kakao.maps.services.Places();
     const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
-    // [추가] 입력한 키워드로 장소를 검색해 기존 마커와 지도를 이동시키는 함수
     function searchPlace() {
         const keyword = document.getElementById('keyword').value.trim();
         if (!keyword) {
@@ -399,12 +428,10 @@
                 const firstPlace = data[0];
                 const moveLatLon = new kakao.maps.LatLng(firstPlace.y, firstPlace.x);
 
-                // 기존 마커 위치를 검색된 위치로 이동 및 지도 중심 변경
                 marker.setPosition(moveLatLon);
                 map.setCenter(moveLatLon);
 
-                // 검색된 장소 이름 말풍선 표시
-                infowindow.setContent('<div style="padding:5px 10px;font-size:13px;">' + firstPlace.place_name + '</div>');
+                infowindow.setContent(`<div class="iw-box">${firstPlace.place_name}</div>`);
                 infowindow.open(map, marker);
             } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
                 alert('검색 결과가 없습니다.');
@@ -414,8 +441,8 @@
         });
     }
 
-    // ==================== [추가] 사이드바 및 다중 인원 / 반경 / 추천 기능 스크립트 ====================
-    let meetingPurpose = 'CAFE';
+    // ==================== 사이드바 및 다중 인원 / 대중교통 균등 상권 분석 스크립트 ====================
+    let meetingPurpose = 'DINING';
     let members = [
         { id: 1, keyword: '', placeName: '', lat: null, lng: null, marker: null },
         { id: 2, keyword: '', placeName: '', lat: null, lng: null, marker: null }
@@ -424,8 +451,10 @@
 
     let radiusCircle = null;
     let recommendMarkers = [];
+    let currentCategorizedGroups = [];
+    let currentSelectedAreaName = '';
+    let activeCategoryFilter = 'ALL';
 
-    // 사이드바 접기/펴기
     function toggleSidebar(id, btn) {
         const el = document.getElementById(id);
         el.classList.toggle('collapsed');
@@ -437,14 +466,12 @@
         }
     }
 
-    // 모임 성격 선택
     function selectPurpose(el) {
         document.querySelectorAll('.purpose-item').forEach(item => item.classList.remove('active'));
         el.classList.add('active');
         meetingPurpose = el.dataset.type;
     }
 
-    // 인원 목록 렌더링
     function renderMembers() {
         document.getElementById('nCountText').textContent = members.length;
         document.getElementById('nCountBox').textContent = members.length;
@@ -461,7 +488,7 @@
                     ${members.length > 2 ? `<button type="button" class="btn-del" onclick="removeMember(${m.id})">삭제</button>` : ''}
                 </div>
                 <div class="member-input-row">
-                    <input type="text" id="member-input-${m.id}" value="${m.keyword}" placeholder="출발지 입력"
+                    <input type="text" id="member-input-${m.id}" value="${m.keyword}" placeholder="출발지 입력 (역, 동, 주소)"
                            onkeypress="if(event.key==='Enter') searchMemberPlace(${m.id})">
                     <button type="button" class="btn-yellow" onclick="searchMemberPlace(${m.id})">검색</button>
                 </div>
@@ -494,7 +521,6 @@
         }
     }
 
-    // 개별 인원 출발지 검색 및 마커 표시
     function searchMemberPlace(id) {
         const val = document.getElementById(`member-input-${id}`).value.trim();
         if (!val) {
@@ -530,28 +556,271 @@
         });
     }
 
-    // 중간 지점 계산 + 반경 원 표시 + JSON & 추천 장소 렌더링
-    function calculateMeetingSpot() {
+    function getDistanceKm(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+    }
+
+    function estimateTransitMinutes(startLat, startLng, endLat, endLng) {
+        const distKm = getDistanceKm(startLat, startLng, endLat, endLng);
+        return Math.max(8, Math.round((distKm / 25) * 60 + 10));
+    }
+
+    // 카카오맵 카테고리 검색 (모든 페이지 전체 수집)
+    function searchCategoryPromise(code, location, radius) {
+        return new Promise((resolve) => {
+            let allPlaces = [];
+            ps.categorySearch(code, function(data, status, pagination) {
+                if (status === kakao.maps.services.Status.OK) {
+                    allPlaces = allPlaces.concat(data);
+                    if (pagination.hasNextPage) {
+                        pagination.nextPage();
+                    } else {
+                        resolve({ places: allPlaces, totalCount: allPlaces.length });
+                    }
+                } else {
+                    resolve({ places: allPlaces, totalCount: allPlaces.length });
+                }
+            }, { location: location, radius: radius });
+        });
+    }
+
+    // 카카오맵 키워드 검색 (모든 페이지 전체 수집)
+    function searchKeywordPromise(keyword, location, radius) {
+        return new Promise((resolve) => {
+            let allPlaces = [];
+            ps.keywordSearch(keyword, function(data, status, pagination) {
+                if (status === kakao.maps.services.Status.OK) {
+                    allPlaces = allPlaces.concat(data);
+                    if (pagination.hasNextPage) {
+                        pagination.nextPage();
+                    } else {
+                        resolve({ places: allPlaces, totalCount: allPlaces.length });
+                    }
+                } else {
+                    resolve({ places: allPlaces, totalCount: allPlaces.length });
+                }
+            }, { location: location, radius: radius, sort: kakao.maps.services.SortBy.DISTANCE });
+        });
+    }
+
+    async function runTasksInBatches(taskFns, batchSize = 5) {
+        const results = [];
+        for (let i = 0; i < taskFns.length; i += batchSize) {
+            const batch = taskFns.slice(i, i + batchSize).map(fn => fn());
+            const batchRes = await Promise.all(batch);
+            results.push(...batchRes);
+        }
+        return results;
+    }
+
+    // 중복 제거 + 거리순 정렬 후 검색된 모든 장소를 제한 없이 반환
+    function prepareAllPlaces(places) {
+        const seen = new Set();
+        return places
+            .filter(p => {
+                if (seen.has(p.id)) return false;
+                seen.add(p.id);
+                return true;
+            })
+            .sort((a, b) => Number(a.distance) - Number(b.distance));
+    }
+
+    // 카테고리 필터 탭 및 그룹별 전체 리스트 렌더링
+    function renderCategorizedRecommendations(filterKey = 'ALL') {
+        activeCategoryFilter = filterKey;
+
+        recommendMarkers.forEach(rm => rm.setMap(null));
+        recommendMarkers = [];
+
+        const filterBar = document.getElementById('categoryFilterBar');
+        const listArea = document.getElementById('recommendListArea');
+
+        const nonEmptyGroups = currentCategorizedGroups.filter(g => g.places.length > 0);
+
+        if (nonEmptyGroups.length === 0) {
+            filterBar.innerHTML = '';
+            listArea.innerHTML = '선정된 상권 반경 내 조건에 맞는 장소가 없습니다.';
+            return;
+        }
+
+        if (nonEmptyGroups.length > 1) {
+            const totalItems = nonEmptyGroups.reduce((sum, g) => sum + g.places.length, 0);
+            let tabsHtml = `<button type="button" class="cat-tab ${filterKey === 'ALL' ? 'active' : ''}" onclick="renderCategorizedRecommendations('ALL')">전체 (${totalItems})</button>`;
+            nonEmptyGroups.forEach(g => {
+                tabsHtml += `<button type="button" class="cat-tab ${filterKey === g.key ? 'active' : ''}" onclick="renderCategorizedRecommendations('${g.key}')">${g.shortLabel} (${g.places.length})</button>`;
+            });
+            filterBar.innerHTML = tabsHtml;
+        } else {
+            filterBar.innerHTML = '';
+        }
+
+        listArea.innerHTML = '';
+        const targetGroups = (filterKey === 'ALL')
+            ? nonEmptyGroups
+            : nonEmptyGroups.filter(g => g.key === filterKey);
+
+        targetGroups.forEach(group => {
+            const section = document.createElement('div');
+            section.className = 'cat-section';
+
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'cat-section-title';
+            titleDiv.innerHTML = `<span>${group.title}</span><span style="color:#2563eb;">${group.places.length}곳</span>`;
+            section.appendChild(titleDiv);
+
+            group.places.forEach((p, idx) => {
+                const pPos = new kakao.maps.LatLng(p.y, p.x);
+                const rMarker = new kakao.maps.Marker({ map: map, position: pPos, title: p.place_name });
+                recommendMarkers.push(rMarker);
+
+                const subCategory = p.category_name.split('>').pop().trim();
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'rec-item';
+                itemDiv.innerHTML = `
+                    <strong>${idx + 1}. ${p.place_name}</strong><br>
+                    <span style="color:#666;font-size:11px;">${subCategory} · 중심역에서 ${p.distance}m</span>
+                `;
+
+                itemDiv.onclick = function() {
+                    document.querySelectorAll('.rec-item').forEach(el => el.classList.remove('active'));
+                    itemDiv.classList.add('active');
+                    map.panTo(pPos);
+                    infowindow.setContent(`<div class="iw-box">${p.place_name}</div>`);
+                    infowindow.open(map, rMarker);
+
+                    document.getElementById('placeDetailArea').innerHTML = `
+                        <div><b>테마 분류:</b> ${group.title}</div>
+                        <div><b>상호명:</b> ${p.place_name}</div>
+                        <div><b>세부 업종:</b> ${p.category_name}</div>
+                        <div><b>주소:</b> ${p.road_address_name || p.address_name}</div>
+                        <div><b>전화:</b> ${p.phone || '없음'}</div>
+                        <div><b>거리:</b> ${currentSelectedAreaName}에서 ${p.distance}m</div>
+                        <div style="margin-top:6px;"><a href="${p.place_url}" target="_blank" style="color:#2563eb;font-weight:bold;">카카오맵 상세보기 →</a></div>
+                    `;
+                };
+                section.appendChild(itemDiv);
+            });
+
+            listArea.appendChild(section);
+        });
+    }
+
+    // [핵심] 백엔드(/api/map/optimal-center) 우선 연동 + 프론트엔드 폴백으로 중심지 일치 보장
+    async function calculateMeetingSpot() {
         const validMembers = members.filter(m => m.lat !== null && m.lng !== null);
         if (validMembers.length < 2) {
             alert('최소 2명 이상의 출발지를 검색해 지정해주세요.');
             return;
         }
 
-        const avgLat = validMembers.reduce((acc, m) => acc + m.lat, 0) / validMembers.length;
-        const avgLng = validMembers.reduce((acc, m) => acc + m.lng, 0) / validMembers.length;
-        const centerPos = new kakao.maps.LatLng(avgLat, avgLng);
+        const listArea = document.getElementById('recommendListArea');
+        listArea.innerHTML = '<div style="color:#2563eb;font-weight:bold;">중심 상권 및 카테고리별 전체 장소를 분석 중입니다...</div>';
 
-        // 기존 marker 객체를 중간 지점으로 이동
+        let selectedLat = null;
+        let selectedLng = null;
+        let selectedAreaName = '';
+        let memberTimes = [];
+        let analysisSource = 'BACKEND_API';
+
+        // 1단계: Spring Boot 백엔드 API(/api/map/optimal-center) 호출 시도
+        try {
+            const backendRes = await fetch(`${BACKEND_BASE_URL}/optimal-center`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    purpose: meetingPurpose,
+                    locations: validMembers.map(m => ({ lat: m.lat, lng: m.lng }))
+                })
+            });
+
+            if (backendRes.ok) {
+                const data = await backendRes.json();
+                if (data.latitude && data.longitude) {
+                    selectedLat = Number(data.latitude);
+                    selectedLng = Number(data.longitude);
+                    selectedAreaName = data.centerName || '추천 중심 상권';
+                    memberTimes = Array.isArray(data.memberTravelMinutes) && data.memberTravelMinutes.length === validMembers.length
+                        ? data.memberTravelMinutes
+                        : validMembers.map(m => estimateTransitMinutes(m.lat, m.lng, selectedLat, selectedLng));
+                }
+            }
+        } catch (err) {
+            // 백엔드 서버가 미실행 중일 경우 아래 프론트엔드 폴백 로직으로 자동 처리
+        }
+
+        // 2단계: 백엔드 응답이 없을 경우 프론트엔드에서 동일 알고리즘으로 계산
+        if (selectedLat === null || selectedLng === null) {
+            analysisSource = 'FRONTEND_FALLBACK';
+            const rawLat = validMembers.reduce((acc, m) => acc + m.lat, 0) / validMembers.length;
+            const rawLng = validMembers.reduce((acc, m) => acc + m.lng, 0) / validMembers.length;
+            const rawCenter = new kakao.maps.LatLng(rawLat, rawLng);
+
+            let stationRes = await searchCategoryPromise('SW8', rawCenter, 5000);
+            let candidates = stationRes.places;
+
+            if (candidates.length === 0) {
+                const fallbackRes = await searchKeywordPromise('역', rawCenter, 10000);
+                candidates = fallbackRes.places;
+            }
+
+            selectedLat = rawLat;
+            selectedLng = rawLng;
+            selectedAreaName = '중간 지점';
+            memberTimes = validMembers.map(m => estimateTransitMinutes(m.lat, m.lng, rawLat, rawLng));
+
+            if (candidates.length > 0) {
+                let bestScore = Infinity;
+
+                for (const cand of candidates.slice(0, 8)) {
+                    const cLat = parseFloat(cand.y);
+                    const cLng = parseFloat(cand.x);
+                    const cPos = new kakao.maps.LatLng(cLat, cLng);
+
+                    const foodCheck = await searchCategoryPromise('FD6', cPos, 500);
+                    if (foodCheck.totalCount < 5) continue;
+
+                    const times = validMembers.map(m => estimateTransitMinutes(m.lat, m.lng, cLat, cLng));
+                    const avgTime = times.reduce((a, b) => a + b, 0) / times.length;
+                    const variance = times.reduce((acc, t) => acc + Math.pow(t - avgTime, 2), 0) / times.length;
+                    const stdDev = Math.sqrt(variance);
+
+                    const totalScore = avgTime + (stdDev * 1.5) - Math.min(foodCheck.totalCount * 0.05, 8);
+
+                    if (totalScore < bestScore) {
+                        bestScore = totalScore;
+                        selectedLat = cLat;
+                        selectedLng = cLng;
+                        selectedAreaName = `${cand.place_name} 인근 상권`;
+                        memberTimes = times;
+                    }
+                }
+            }
+        }
+
+        currentSelectedAreaName = selectedAreaName;
+        const centerPos = new kakao.maps.LatLng(selectedLat, selectedLng);
+        const avgTransitMin = Math.round(memberTimes.reduce((a, b) => a + b, 0) / memberTimes.length);
+        const maxDiffMin = Math.max(...memberTimes) - Math.min(...memberTimes);
+
         marker.setPosition(centerPos);
-        infowindow.setContent('<div style="padding:5px 10px;font-size:13px;font-weight:bold;">추천 중간 지점</div>');
+        infowindow.setContent(`
+            <div class="iw-box">
+                <div style="font-weight:bold;margin-bottom:2px;">📍 ${selectedAreaName}</div>
+                <div style="color:#2563eb;font-weight:bold;">평균 약 ${avgTransitMin}분 (편차 ${maxDiffMin}분)</div>
+            </div>
+        `);
         infowindow.open(map, marker);
 
-        // 반경 500m 원 표시
         if (radiusCircle) radiusCircle.setMap(null);
         radiusCircle = new kakao.maps.Circle({
             center: centerPos,
-            radius: 500,
+            radius: 800,
             strokeWeight: 2,
             strokeColor: '#2563eb',
             strokeOpacity: 0.8,
@@ -560,84 +829,124 @@
         });
         radiusCircle.setMap(map);
 
-        // 기존 추천 마커 정리
-        recommendMarkers.forEach(rm => rm.setMap(null));
-        recommendMarkers = [];
-
-        // 지도 영역 맞춤
         const bounds = new kakao.maps.LatLngBounds();
         validMembers.forEach(m => bounds.extend(new kakao.maps.LatLng(m.lat, m.lng)));
         bounds.extend(centerPos);
         map.setBounds(bounds);
 
-        // 모임 성격에 따른 카테고리 검색 (CE7: 카페, FD6: 음식점)
-        const categoryCode = (meetingPurpose === 'CAFE' || meetingPurpose === 'STUDY') ? 'CE7' : 'FD6';
+        // 3단계: 선정된 중심 좌표(centerPos) 기준으로 추천 장소 전체 검색
+        currentCategorizedGroups = [];
 
-        ps.categorySearch(categoryCode, function(places, status, pagination) {
-            const count = (status === kakao.maps.services.Status.OK) ? pagination.totalCount : 0;
-            const cafeCount = (categoryCode === 'CE7') ? count : Math.round(count * 0.4);
-            const foodCount = (categoryCode === 'FD6') ? count : Math.round(count * 1.6);
-            const densityScore = Number(((cafeCount * 1.2) + (foodCount * 1.0)).toFixed(1));
+        if (meetingPurpose === 'DINING') {
+            const res = await searchCategoryPromise('FD6', centerPos, 600);
+            currentCategorizedGroups = [
+                { key: 'DINING', shortLabel: '식사·맛집', title: '🍽️ 식사 / 맛집 / 회식', places: prepareAllPlaces(res.places) }
+            ];
 
-            const jsonObj = {
-                purpose: meetingPurpose,
-                memberCount: validMembers.length,
-                members: validMembers.map((m, i) => ({
-                    name: `인원 ${i + 1}`,
-                    placeName: m.placeName,
-                    latitude: m.lat,
-                    longitude: m.lng
+        } else if (meetingPurpose === 'CAFE') {
+            const res = await searchCategoryPromise('CE7', centerPos, 600);
+            currentCategorizedGroups = [
+                { key: 'CAFE', shortLabel: '카페·스터디', title: '☕ 카페 / 수다 / 스터디', places: prepareAllPlaces(res.places) }
+            ];
+
+        } else if (meetingPurpose === 'SHOPPING') {
+            const [martRes, clothRes, shopRes] = await Promise.all([
+                searchCategoryPromise('MT1', centerPos, 800),
+                searchKeywordPromise('의류', centerPos, 600),
+                searchKeywordPromise('마트', centerPos, 600)
+            ]);
+            currentCategorizedGroups = [
+                { key: 'HYPERMART', shortLabel: '대형마트', title: '🏬 대형마트', places: prepareAllPlaces(martRes.places) },
+                { key: 'CLOTHING', shortLabel: '의류·패션', title: '👕 의류 / 쇼핑', places: prepareAllPlaces(clothRes.places) },
+                { key: 'MART', shortLabel: '마트·편의', title: '🛒 마트 / 생필품', places: prepareAllPlaces(shopRes.places) }
+            ];
+
+        } else if (meetingPurpose === 'CULTURE') {
+            const gameTasks = [
+                () => searchKeywordPromise('노래방', centerPos, 700),
+                () => searchKeywordPromise('코인노래방', centerPos, 700),
+                () => searchKeywordPromise('보드게임카페', centerPos, 700),
+                () => searchKeywordPromise('만화카페', centerPos, 700),
+                () => searchKeywordPromise('방탈출카페', centerPos, 700),
+                () => searchKeywordPromise('VR카페', centerPos, 700),
+                () => searchKeywordPromise('레이저서바이벌', centerPos, 800),
+                () => searchKeywordPromise('PC방', centerPos, 700),
+                () => searchKeywordPromise('오락실', centerPos, 700)
+            ];
+
+            const sportTasks = [
+                () => searchKeywordPromise('당구장', centerPos, 700),
+                () => searchKeywordPromise('탁구장', centerPos, 800),
+                () => searchKeywordPromise('실내배드민턴', centerPos, 800),
+                () => searchKeywordPromise('스크린골프', centerPos, 800),
+                () => searchKeywordPromise('양궁카페', centerPos, 800),
+                () => searchKeywordPromise('실내사격', centerPos, 800),
+                () => searchKeywordPromise('클라이밍', centerPos, 800),
+                () => searchKeywordPromise('롤러스케이트장', centerPos, 800),
+                () => searchKeywordPromise('볼링장', centerPos, 800),
+                () => searchKeywordPromise('스크린야구', centerPos, 800)
+            ];
+
+            const watchTasks = [
+                () => searchCategoryPromise('CT1', centerPos, 800),
+                () => searchKeywordPromise('소극장', centerPos, 800),
+                () => searchKeywordPromise('공연장', centerPos, 800),
+                () => searchKeywordPromise('다트바', centerPos, 700),
+                () => searchKeywordPromise('라이브카페', centerPos, 700)
+            ];
+
+            const craftTasks = [
+                () => searchKeywordPromise('공방', centerPos, 700),
+                () => searchKeywordPromise('도자기공방', centerPos, 800),
+                () => searchKeywordPromise('반지공방', centerPos, 800),
+                () => searchKeywordPromise('셀프사진관', centerPos, 700),
+                () => searchKeywordPromise('인생네컷', centerPos, 700)
+            ];
+
+            const [gameRes, sportRes, watchRes, craftRes] = await Promise.all([
+                runTasksInBatches(gameTasks, 5),
+                runTasksInBatches(sportTasks, 5),
+                runTasksInBatches(watchTasks, 5),
+                runTasksInBatches(craftTasks, 5)
+            ]);
+
+            currentCategorizedGroups = [
+                { key: 'GAME', shortLabel: '놀이·게임', title: '🎮 1. 실내 놀이 및 게임', places: prepareAllPlaces(gameRes.flatMap(r => r.places)) },
+                { key: 'SPORT', shortLabel: '실내스포츠', title: '🎳 2. 실내 스포츠 및 액티비티', places: prepareAllPlaces(sportRes.flatMap(r => r.places)) },
+                { key: 'WATCH', shortLabel: '문화·관람', title: '🎬 3. 문화 및 관람 시설', places: prepareAllPlaces(watchRes.flatMap(r => r.places)) },
+                { key: 'CRAFT', shortLabel: '공방·포토', title: '🎨 4. 이색 체험 및 공방', places: prepareAllPlaces(craftRes.flatMap(r => r.places)) }
+            ];
+        }
+
+        const displayedTotalCount = currentCategorizedGroups.reduce((sum, g) => sum + g.places.length, 0);
+
+        const jsonObj = {
+            source: analysisSource,
+            purpose: meetingPurpose,
+            selectedHub: {
+                areaName: selectedAreaName,
+                latitude: Number(selectedLat.toFixed(6)),
+                longitude: Number(selectedLng.toFixed(6)),
+                avgTransitMinutes: avgTransitMin,
+                maxTimeDiffMinutes: maxDiffMin
+            },
+            members: validMembers.map((m, i) => ({
+                name: `인원 ${i + 1}`,
+                startPlace: m.placeName,
+                estimatedTransitMinutes: memberTimes[i]
+            })),
+            categorizedSummary: currentCategorizedGroups
+                .filter(g => g.places.length > 0)
+                .map(g => ({
+                    category: g.title,
+                    displayedCount: g.places.length,
+                    places: g.places.map(p => `${p.place_name} (${p.distance}m)`)
                 })),
-                center: {
-                    latitude: Number(avgLat.toFixed(6)),
-                    longitude: Number(avgLng.toFixed(6)),
-                    radius: 500
-                },
-                analysis: {
-                    cafeCount: cafeCount,
-                    foodCount: foodCount,
-                    densityScore: densityScore
-                }
-            };
+            displayedTotalPlaces: displayedTotalCount
+        };
+        document.getElementById('jsonDisplay').textContent = JSON.stringify(jsonObj, null, 2);
 
-            document.getElementById('jsonDisplay').textContent = JSON.stringify(jsonObj, null, 2);
-
-            // 추천 장소 Top 5 렌더링
-            const listArea = document.getElementById('recommendListArea');
-            if (status !== kakao.maps.services.Status.OK || places.length === 0) {
-                listArea.innerHTML = '반경 500m 내 검색된 추천 장소가 없습니다.';
-                return;
-            }
-
-            listArea.innerHTML = '';
-            places.slice(0, 5).forEach((p, idx) => {
-                const pPos = new kakao.maps.LatLng(p.y, p.x);
-                const rMarker = new kakao.maps.Marker({ map: map, position: pPos, title: p.place_name });
-                recommendMarkers.push(rMarker);
-
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'rec-item';
-                itemDiv.innerHTML = `<strong>${idx + 1}. ${p.place_name}</strong><br><span style="color:#666;font-size:12px;">${p.category_group_name} · ${p.distance}m</span>`;
-
-                itemDiv.onclick = function() {
-                    document.querySelectorAll('.rec-item').forEach(el => el.classList.remove('active'));
-                    itemDiv.classList.add('active');
-                    map.panTo(pPos);
-                    infowindow.setContent(`<div style="padding:5px 10px;font-size:12px;">${p.place_name}</div>`);
-                    infowindow.open(map, rMarker);
-
-                    document.getElementById('placeDetailArea').innerHTML = `
-                        <div><b>상호명:</b> ${p.place_name}</div>
-                        <div><b>분류:</b> ${p.category_name}</div>
-                        <div><b>주소:</b> ${p.road_address_name || p.address_name}</div>
-                        <div><b>전화:</b> ${p.phone || '없음'}</div>
-                        <div><b>거리:</b> 중간지점에서 ${p.distance}m</div>
-                        <div style="margin-top:6px;"><a href="${p.place_url}" target="_blank" style="color:#2563eb;font-weight:bold;">카카오맵 상세보기 →</a></div>
-                    `;
-                };
-                listArea.appendChild(itemDiv);
-            });
-        }, { location: centerPos, radius: 500 });
+        renderCategorizedRecommendations('ALL');
     }
 
     function copyJsonData() {
@@ -645,7 +954,6 @@
         navigator.clipboard.writeText(text).then(() => alert('JSON이 복사되었습니다.'));
     }
 
-    // 초기 인원 2명 렌더링
     renderMembers();
 </script>
 
