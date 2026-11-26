@@ -301,6 +301,443 @@
             min-width: max-content;
             color: #222;
         }
+
+        /* 강조 마커 플로팅 배지 */
+        .highlighted-marker-label {
+            background: #1d4ed8;
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+            box-shadow: 0 3px 10px rgba(29, 78, 216, 0.45);
+            border: 2px solid #ffffff;
+            transform: translateY(-54px);
+            position: relative;
+        }
+        .highlighted-marker-label::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -6px;
+            transform: translateX(-50%);
+            border-width: 6px 5px 0 5px;
+            border-style: solid;
+            border-color: #1d4ed8 transparent transparent transparent;
+        }
+
+        /* ==================== 장소 상세 정보 모달 스타일 ==================== */
+        .place-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.52);
+            backdrop-filter: blur(2px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .place-modal-overlay.open {
+            display: flex;
+            animation: pmFadeIn 0.18s ease-out;
+        }
+        @keyframes pmFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .place-modal {
+            width: 100%;
+            max-width: 520px;
+            max-height: 86vh;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: pmSlideUp 0.2s ease-out;
+            box-sizing: border-box;
+        }
+        .place-modal * { box-sizing: border-box; }
+        @keyframes pmSlideUp {
+            from { transform: translateY(14px) scale(0.98); opacity: 0.7; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .pm-header {
+            padding: 18px 20px 14px;
+            background: #1e293b;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .pm-theme-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: rgba(254, 229, 0, 0.2);
+            color: #FEE500;
+            margin-bottom: 6px;
+        }
+        .pm-title {
+            margin: 0;
+            font-size: 19px;
+            font-weight: bold;
+            line-height: 1.3;
+            word-break: keep-all;
+        }
+        .pm-category-sub {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+        .pm-close-btn {
+            background: rgba(255, 255, 255, 0.12);
+            border: none;
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.15s;
+        }
+        .pm-close-btn:hover { background: rgba(255, 255, 255, 0.24); }
+
+        .pm-body {
+            padding: 18px 20px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .pm-section-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .pm-info-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            font-size: 13px;
+        }
+        .pm-info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.45;
+        }
+        .pm-info-label {
+            min-width: 72px;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .pm-info-val {
+            color: #0f172a;
+            flex: 1;
+            word-break: break-word;
+        }
+        .pm-sub-addr {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+        .pm-copy-btn {
+            margin-left: 6px;
+            padding: 2px 7px;
+            font-size: 11px;
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #334155;
+        }
+        .pm-copy-btn:hover { background: #f1f5f9; }
+        .pm-dist-badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        /* 로딩 스피너 & 스켈레톤 UI */
+        .pm-loading-box {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px;
+            background: #ffffff;
+        }
+        .pm-loading-head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #475569;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        .pm-spinner {
+            width: 15px;
+            height: 15px;
+            border: 2px solid #cbd5e1;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            animation: pmSpin 0.75s linear infinite;
+            flex-shrink: 0;
+        }
+        @keyframes pmSpin {
+            to { transform: rotate(360deg); }
+        }
+        .pm-skeleton-line {
+            height: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: pmShimmer 1.2s infinite;
+        }
+        .pm-skeleton-line.short { width: 55%; }
+        .pm-skeleton-line.med { width: 80%; }
+        .pm-skeleton-photos {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .pm-skeleton-photo {
+            flex: 1;
+            height: 76px;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: pmShimmer 1.2s infinite;
+        }
+        @keyframes pmShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* 외부 상세 데이터 UI */
+        .pm-photo-strip {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            margin-bottom: 10px;
+        }
+        .pm-photo-item {
+            width: 140px;
+            height: 98px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            flex-shrink: 0;
+            background: #f1f5f9;
+        }
+        .pm-rating-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .pm-rating-score {
+            font-size: 16px;
+            font-weight: bold;
+            color: #0f172a;
+        }
+        .pm-stars {
+            color: #f59e0b;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        .pm-open-badge {
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .pm-open-badge.open { background: #dcfce7; color: #166534; }
+        .pm-open-badge.closed { background: #fee2e2; color: #991b1b; }
+        .pm-price-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: #f1f5f9;
+            color: #334155;
+        }
+        .pm-summary-text {
+            font-size: 12px;
+            color: #334155;
+            background: #f8fafc;
+            border-left: 3px solid #94a3b8;
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .pm-hours-details {
+            font-size: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 10px;
+        }
+        .pm-hours-details summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #334155;
+        }
+        .pm-hours-list {
+            margin: 6px 0 0;
+            padding-left: 16px;
+            line-height: 1.6;
+            color: #475569;
+        }
+        .pm-review-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .pm-review-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .pm-review-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+        .pm-review-text {
+            color: #1e293b;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .pm-notice-box {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 12px;
+            color: #475569;
+            line-height: 1.55;
+        }
+        .pm-error-box {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 12px;
+            color: #991b1b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .pm-retry-btn {
+            padding: 5px 10px;
+            font-size: 11px;
+            font-weight: bold;
+            border: 1px solid #ef4444;
+            background: #ffffff;
+            color: #dc2626;
+            border-radius: 6px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .pm-retry-btn:hover { background: #fee2e2; }
+
+        /* 모달 하단 외부 링크 버튼 영역 */
+        .pm-footer {
+            padding: 14px 20px;
+            border-top: 1px solid #e2e8f0;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .pm-actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .pm-link-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 9px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            transition: filter 0.15s;
+        }
+        .pm-link-btn:hover { filter: brightness(0.94); }
+        .pm-btn-kakao {
+            background: #FEE500;
+            color: #191919;
+        }
+        .pm-btn-kakao-outline {
+            background: #fffbeb;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+        .pm-btn-naver {
+            background: #03C75A;
+            color: #ffffff;
+        }
+        .pm-btn-naver-outline {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+        .pm-btn-reopen {
+            margin-top: 8px;
+            width: 100%;
+            padding: 7px 10px;
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .pm-btn-reopen:hover { background: #1d4ed8; }
     </style>
 </head>
 <body>
@@ -394,6 +831,38 @@
     </div>
 </div>
 
+<!-- ==================== 장소 상세 정보 모달 ==================== -->
+<div class="place-modal-overlay" id="placeDetailModalOverlay" onclick="handleModalOverlayClick(event)">
+    <div class="place-modal" id="placeDetailModal" role="dialog" aria-modal="true" aria-labelledby="pmTitle">
+        <div class="pm-header">
+            <div style="min-width: 0;">
+                <div class="pm-theme-badge" id="pmThemeBadge">추천 장소</div>
+                <h3 class="pm-title" id="pmTitle">장소명</h3>
+                <div class="pm-category-sub" id="pmCategorySub"></div>
+            </div>
+            <button type="button" class="pm-close-btn" onclick="closePlaceDetailModal()" aria-label="상세 정보 닫기">×</button>
+        </div>
+
+        <div class="pm-body">
+            <div>
+                <div class="pm-section-title">기본 정보 (카카오 로컬)</div>
+                <div class="pm-info-card" id="pmBasicInfo"></div>
+            </div>
+
+            <div>
+                <div class="pm-section-title">
+                    <span>추가 상세 정보 (평점 · 영업시간 · 리뷰 · 사진)</span>
+                </div>
+                <div id="pmExtraInfo"></div>
+            </div>
+        </div>
+
+        <div class="pm-footer">
+            <div class="pm-actions-grid" id="pmActionsGrid"></div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f8bb2e5743371424d0167c04156c02e4&libraries=services"></script>
 
 <script>
@@ -454,6 +923,449 @@
     let currentCategorizedGroups = [];
     let currentSelectedAreaName = '';
     let activeCategoryFilter = 'ALL';
+
+    let selectedPlaceMarker = null;
+    let highlightedPinMarker = null;
+    let selectedPlaceOverlay = null;
+    let selectedPlaceContext = null;
+    let placeDetailAbortController = null;
+    let placeDetailRequestSeq = 0;
+
+    const BACKEND_ORIGIN = BACKEND_BASE_URL.replace(/\/api\/map\/?$/, '');
+
+    // 선택된 가게 강조 마커 이미지 (SVG Data URI)
+    const HIGHLIGHTED_MARKER_SVG =
+        'data:image/svg+xml;charset=UTF-8,' +
+        encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="50" viewBox="0 0 40 50">' +
+            '<defs><filter id="s" x="-20%" y="-10%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.35"/></filter></defs>' +
+            '<path filter="url(#s)" d="M20 2C10.6 2 3 9.6 3 19c0 12.2 17 28 17 28s17-15.8 17-28C37 9.6 29.4 2 20 2z" fill="#ef4444" stroke="#ffffff" stroke-width="2.5"/>' +
+            '<circle cx="20" cy="18.5" r="6.5" fill="#ffffff"/>' +
+            '<circle cx="20" cy="18.5" r="3" fill="#ef4444"/>' +
+            '</svg>'
+        );
+    const highlightedMarkerImage = new kakao.maps.MarkerImage(
+        HIGHLIGHTED_MARKER_SVG,
+        new kakao.maps.Size(40, 50),
+        { offset: new kakao.maps.Point(20, 48) }
+    );
+
+    function escapeHtml(value) {
+        if (value === null || value === undefined) return '';
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function clearHighlightedPlaceMarker() {
+        if (highlightedPinMarker) {
+            highlightedPinMarker.setMap(null);
+            highlightedPinMarker = null;
+        }
+        if (selectedPlaceMarker) {
+            selectedPlaceMarker.setMap(map);
+            selectedPlaceMarker = null;
+        }
+        if (selectedPlaceOverlay) {
+            selectedPlaceOverlay.setMap(null);
+            selectedPlaceOverlay = null;
+        }
+    }
+
+    function highlightPlaceMarker(place, rMarker) {
+        clearHighlightedPlaceMarker();
+
+        const pPos = new kakao.maps.LatLng(place.y, place.x);
+        if (rMarker) {
+            rMarker.setMap(null);
+            selectedPlaceMarker = rMarker;
+        }
+
+        highlightedPinMarker = new kakao.maps.Marker({
+            map: map,
+            position: pPos,
+            image: highlightedMarkerImage,
+            title: place.place_name,
+            zIndex: 10
+        });
+        kakao.maps.event.addListener(highlightedPinMarker, 'click', reopenSelectedPlaceModal);
+
+        infowindow.close();
+
+        selectedPlaceOverlay = new kakao.maps.CustomOverlay({
+            position: pPos,
+            content: `<div class="highlighted-marker-label">📍 ${escapeHtml(place.place_name)}</div>`,
+            yAnchor: 1,
+            zIndex: 11
+        });
+        selectedPlaceOverlay.setMap(map);
+
+        // 지도가 너무 멀리 축소되어 있으면 보기 좋게 확대 후 부드럽게 이동
+        if (map.getLevel() > 4) {
+            map.setLevel(3, { animate: { duration: 250 } });
+        }
+        map.panTo(pPos);
+    }
+
+    function copyTextToClipboard(text, btnEl) {
+        if (!text) return;
+        const onSuccess = () => {
+            if (!btnEl) return;
+            const prev = btnEl.textContent;
+            btnEl.textContent = '복사됨 ✓';
+            setTimeout(() => { btnEl.textContent = prev; }, 1400);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(onSuccess).catch(() => {});
+        }
+    }
+
+    function buildExternalMapLinks(place) {
+        const placeName = place.place_name || '';
+        const addressBase = (place.road_address_name || place.address_name || '').split(/\s+/).slice(0, 2).join(' ');
+        const kakaoDetailUrl = place.place_url || `https://map.kakao.com/link/search/${encodeURIComponent(placeName)}`;
+        const kakaoDirectionsUrl = `https://map.kakao.com/link/to/${encodeURIComponent(placeName)},${place.y},${place.x}`;
+        const naverSearchQuery = [placeName, addressBase].filter(Boolean).join(' ');
+        const naverReviewUrl = `https://map.naver.com/p/search/${encodeURIComponent(naverSearchQuery)}`;
+        const naverDirectionsUrl = `https://map.naver.com/p/directions/-/${place.x},${place.y},${encodeURIComponent(placeName)}/-/transit`;
+
+        return {
+            kakaoDetailUrl,
+            kakaoDirectionsUrl,
+            naverReviewUrl,
+            naverDirectionsUrl
+        };
+    }
+
+    function renderLoadingSkeletonHtml() {
+        return `
+            <div class="pm-loading-box">
+                <div class="pm-loading-head">
+                    <span class="pm-spinner"></span>
+                    <span>영업시간, 평점, 리뷰, 사진 정보를 불러오는 중입니다...</span>
+                </div>
+                <div class="pm-skeleton-photos">
+                    <div class="pm-skeleton-photo"></div>
+                    <div class="pm-skeleton-photo"></div>
+                    <div class="pm-skeleton-photo"></div>
+                </div>
+                <div class="pm-skeleton-line short"></div>
+                <div class="pm-skeleton-line med"></div>
+                <div class="pm-skeleton-line"></div>
+            </div>
+        `;
+    }
+
+    function renderStarString(rating) {
+        const score = Math.max(0, Math.min(5, Number(rating) || 0));
+        const full = Math.round(score);
+        return '★'.repeat(full) + '☆'.repeat(5 - full);
+    }
+
+    function renderExtraDetailResult(data) {
+        const container = document.getElementById('pmExtraInfo');
+        if (!container) return;
+
+        if (!data || data.status === 'API_KEY_NOT_CONFIGURED') {
+            container.innerHTML = `
+                <div class="pm-notice-box">
+                    <div style="font-weight:bold;color:#1e293b;margin-bottom:4px;">ℹ️ 추가 외부 상세 정보 미연동 상태</div>
+                    <div>현재 서버에 Google Places API 키가 설정되어 있지 않아 카카오 기본 정보만 표시됩니다.</div>
+                    <div style="margin-top:4px;color:#64748b;">아래 <b>카카오맵 / 네이버지도</b> 버튼에서 최신 평점, 영업시간, 사진 및 리뷰를 바로 확인하실 수 있습니다.</div>
+                </div>
+            `;
+            return;
+        }
+
+        if (data.status === 'NOT_FOUND') {
+            container.innerHTML = `
+                <div class="pm-notice-box">
+                    <div style="font-weight:bold;color:#1e293b;margin-bottom:4px;">등록된 외부 추가 정보가 없습니다</div>
+                    <div>${escapeHtml(data.message || '영업시간·평점·리뷰 정보를 찾지 못했습니다. 아래 외부 지도 링크를 이용해 주세요.')}</div>
+                </div>
+            `;
+            return;
+        }
+
+        if (data.status !== 'OK') {
+            container.innerHTML = `
+                <div class="pm-error-box">
+                    <span>${escapeHtml(data.message || '추가 상세 정보를 불러오지 못했습니다.')}</span>
+                    <button type="button" class="pm-retry-btn" onclick="retryPlaceExtraDetail()">다시 시도</button>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+
+        // 1. 사진 갤러리
+        if (Array.isArray(data.photos) && data.photos.length > 0) {
+            const imgs = data.photos.map(url => {
+                const fullUrl = url.startsWith('http') ? url : `${BACKEND_ORIGIN}${url}`;
+                return `<img class="pm-photo-item" src="${escapeHtml(fullUrl)}" alt="매장 사진" loading="lazy" onerror="this.style.display='none'">`;
+            }).join('');
+            html += `<div class="pm-photo-strip">${imgs}</div>`;
+        }
+
+        // 2. 평점, 영업 상태, 가격대
+        const hasRating = typeof data.rating === 'number';
+        const hasOpenNow = typeof data.openNow === 'boolean';
+        const hasPrice = Boolean(data.priceLevel);
+
+        if (hasRating || hasOpenNow || hasPrice) {
+            html += '<div class="pm-rating-row">';
+            if (hasRating) {
+                const countText = (typeof data.userRatingCount === 'number')
+                    ? ` <span style="font-size:12px;color:#64748b;font-weight:normal;">(${data.userRatingCount.toLocaleString()}명 참여)</span>`
+                    : '';
+                html += `<span class="pm-stars">${renderStarString(data.rating)}</span>`;
+                html += `<span class="pm-rating-score">${data.rating.toFixed(1)}${countText}</span>`;
+            }
+            if (hasOpenNow) {
+                html += data.openNow
+                    ? '<span class="pm-open-badge open">● 영업 중</span>'
+                    : '<span class="pm-open-badge closed">● 영업 종료</span>';
+            }
+            if (hasPrice) {
+                html += `<span class="pm-price-badge">${escapeHtml(data.priceLevel)}</span>`;
+            }
+            html += '</div>';
+        }
+
+        // 3. 한줄 소개
+        if (data.editorialSummary) {
+            html += `<div class="pm-summary-text">${escapeHtml(data.editorialSummary)}</div>`;
+        }
+
+        // 4. 요일별 영업시간
+        if (Array.isArray(data.weekdayDescriptions) && data.weekdayDescriptions.length > 0) {
+            const daysHtml = data.weekdayDescriptions
+                .map(d => `<li>${escapeHtml(d)}</li>`)
+                .join('');
+            html += `
+                <details class="pm-hours-details">
+                    <summary>🕒 요일별 영업시간 보기</summary>
+                    <ul class="pm-hours-list">${daysHtml}</ul>
+                </details>
+            `;
+        }
+
+        // 5. 공식 웹사이트
+        if (data.websiteUri) {
+            html += `
+                <div style="font-size:12px;margin-bottom:10px;">
+                    🌐 <a href="${escapeHtml(data.websiteUri)}" target="_blank" rel="noopener noreferrer" style="color:#2563eb;word-break:break-all;">${escapeHtml(data.websiteUri)}</a>
+                </div>
+            `;
+        }
+
+        // 6. 방문자 리뷰
+        if (Array.isArray(data.reviews) && data.reviews.length > 0) {
+            const reviewsHtml = data.reviews.map(rev => `
+                <div class="pm-review-card">
+                    <div class="pm-review-meta">
+                        <span><b>${escapeHtml(rev.authorName || '방문자')}</b> ${typeof rev.rating === 'number' ? `<span style="color:#f59e0b;">★ ${rev.rating.toFixed(1)}</span>` : ''}</span>
+                        <span>${escapeHtml(rev.relativeTime || '')}</span>
+                    </div>
+                    <div class="pm-review-text">${escapeHtml(rev.text || '내용 없는 별점 평가')}</div>
+                </div>
+            `).join('');
+            html += `
+                <div style="font-size:12px;font-weight:bold;color:#334155;margin-bottom:6px;">💬 주요 방문자 리뷰</div>
+                <div class="pm-review-list">${reviewsHtml}</div>
+            `;
+        }
+
+        if (!html) {
+            html = `
+                <div class="pm-notice-box">
+                    표시할 추가 상세 정보가 없습니다. 아래 지도 링크에서 상세 리뷰를 확인해 보세요.
+                </div>
+            `;
+        }
+
+        container.innerHTML = html;
+    }
+
+    async function fetchPlaceExtraDetail(place) {
+        const extraBox = document.getElementById('pmExtraInfo');
+        if (!extraBox) return;
+
+        if (placeDetailAbortController) {
+            placeDetailAbortController.abort();
+        }
+        placeDetailAbortController = new AbortController();
+        const currentSeq = ++placeDetailRequestSeq;
+
+        extraBox.innerHTML = renderLoadingSkeletonHtml();
+
+        const params = new URLSearchParams({
+            name: place.place_name || '',
+            lat: String(place.y || ''),
+            lng: String(place.x || ''),
+            address: place.road_address_name || place.address_name || '',
+            kakaoPlaceId: place.id || ''
+        });
+
+        try {
+            const res = await fetch(`${BACKEND_BASE_URL}/place-detail?${params.toString()}`, {
+                method: 'GET',
+                signal: placeDetailAbortController.signal
+            });
+
+            if (currentSeq !== placeDetailRequestSeq) return;
+
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`);
+            }
+
+            const data = await res.json();
+            if (currentSeq !== placeDetailRequestSeq) return;
+
+            renderExtraDetailResult(data);
+        } catch (err) {
+            if (err && err.name === 'AbortError') return;
+            if (currentSeq !== placeDetailRequestSeq) return;
+
+            extraBox.innerHTML = `
+                <div class="pm-error-box">
+                    <span>추가 상세 정보 서버와 연결할 수 없습니다. (카카오 기본 정보는 정상 표시됩니다.)</span>
+                    <button type="button" class="pm-retry-btn" onclick="retryPlaceExtraDetail()">다시 시도</button>
+                </div>
+            `;
+        }
+    }
+
+    function retryPlaceExtraDetail() {
+        if (selectedPlaceContext && selectedPlaceContext.place) {
+            fetchPlaceExtraDetail(selectedPlaceContext.place);
+        }
+    }
+
+    function reopenSelectedPlaceModal() {
+        if (!selectedPlaceContext) return;
+        const { place, group, marker, itemDiv } = selectedPlaceContext;
+        openPlaceDetail(place, group, marker, itemDiv);
+    }
+
+    function openPlaceDetail(place, group, rMarker, itemDiv) {
+        selectedPlaceContext = { place, group, marker: rMarker, itemDiv };
+
+        // 1. 리스트 활성 표시
+        document.querySelectorAll('.rec-item').forEach(el => el.classList.remove('active'));
+        if (itemDiv) {
+            itemDiv.classList.add('active');
+            itemDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // 2. 지도 부드럽게 이동 및 마커 강조
+        highlightPlaceMarker(place, rMarker);
+
+        // 3. 기본 정보 계산 및 링크 구성
+        const roadAddr = place.road_address_name || '';
+        const jibunAddr = place.address_name || '';
+        const primaryAddr = roadAddr || jibunAddr || '주소 정보 없음';
+        const phone = place.phone || '';
+        const distanceMeters = Number(place.distance);
+        const hasDistance = !Number.isNaN(distanceMeters) && place.distance !== '' && place.distance !== undefined;
+        const walkMinutes = hasDistance ? Math.max(1, Math.round(distanceMeters / 67)) : null;
+        const links = buildExternalMapLinks(place);
+
+        // 4. 오른쪽 사이드바 하단 요약 카드도 함께 동기화
+        const detailArea = document.getElementById('placeDetailArea');
+        if (detailArea) {
+            detailArea.innerHTML = `
+                <div><b>테마 분류:</b> ${escapeHtml(group.title)}</div>
+                <div><b>상호명:</b> ${escapeHtml(place.place_name)}</div>
+                <div><b>카테고리:</b> ${escapeHtml(place.category_name || '정보 없음')}</div>
+                <div><b>주소:</b> ${escapeHtml(primaryAddr)}</div>
+                <div><b>전화:</b> ${phone ? escapeHtml(phone) : '정보 없음'}</div>
+                <div><b>거리:</b> ${hasDistance ? `${escapeHtml(currentSelectedAreaName)}에서 ${distanceMeters}m (도보 약 ${walkMinutes}분)` : '거리 정보 없음'}</div>
+                <button type="button" class="pm-btn-reopen" onclick="reopenSelectedPlaceModal()">상세 정보 창 크게 보기</button>
+            `;
+        }
+
+        // 5. 모달 헤더 및 카카오 기본 정보 즉시 렌더링
+        document.getElementById('pmThemeBadge').textContent = group.title || '추천 장소';
+        document.getElementById('pmTitle').textContent = place.place_name || '이름 없음';
+        document.getElementById('pmCategorySub').textContent = place.category_name || '카테고리 정보 없음';
+
+        const basicInfoEl = document.getElementById('pmBasicInfo');
+        basicInfoEl.innerHTML = `
+            <div class="pm-info-row">
+                <span class="pm-info-label">📍 주소</span>
+                <div class="pm-info-val">
+                    <div>
+                        <span>${escapeHtml(primaryAddr)}</span>
+                        ${primaryAddr !== '주소 정보 없음' ? `<button type="button" class="pm-copy-btn" id="pmCopyAddrBtn">복사</button>` : ''}
+                    </div>
+                    ${(roadAddr && jibunAddr) ? `<div class="pm-sub-addr">(지번) ${escapeHtml(jibunAddr)}</div>` : ''}
+                </div>
+            </div>
+            <div class="pm-info-row">
+                <span class="pm-info-label">📞 전화번호</span>
+                <div class="pm-info-val">
+                    ${phone
+                        ? `<a href="tel:${escapeHtml(phone)}" style="color:#2563eb;font-weight:bold;text-decoration:none;">${escapeHtml(phone)}</a>`
+                        : '<span style="color:#94a3b8;">등록된 전화번호 없음</span>'}
+                </div>
+            </div>
+            <div class="pm-info-row">
+                <span class="pm-info-label">🚶 거리</span>
+                <div class="pm-info-val">
+                    ${hasDistance
+                        ? `<span class="pm-dist-badge">${escapeHtml(currentSelectedAreaName || '중심지')}에서 ${distanceMeters}m · 도보 약 ${walkMinutes}분</span>`
+                        : '<span style="color:#94a3b8;">거리 정보 없음</span>'}
+                </div>
+            </div>
+        `;
+
+        const copyBtn = document.getElementById('pmCopyAddrBtn');
+        if (copyBtn) {
+            copyBtn.onclick = () => copyTextToClipboard(primaryAddr, copyBtn);
+        }
+
+        // 6. 외부 링크 버튼 렌더링
+        document.getElementById('pmActionsGrid').innerHTML = `
+            <a class="pm-link-btn pm-btn-kakao" href="${escapeHtml(links.kakaoDetailUrl)}" target="_blank" rel="noopener noreferrer">💬 카카오맵 리뷰 · 상세</a>
+            <a class="pm-link-btn pm-btn-kakao-outline" href="${escapeHtml(links.kakaoDirectionsUrl)}" target="_blank" rel="noopener noreferrer">🧭 카카오맵 길찾기</a>
+            <a class="pm-link-btn pm-btn-naver" href="${escapeHtml(links.naverReviewUrl)}" target="_blank" rel="noopener noreferrer">🔍 네이버지도 리뷰 · 검색</a>
+            <a class="pm-link-btn pm-btn-naver-outline" href="${escapeHtml(links.naverDirectionsUrl)}" target="_blank" rel="noopener noreferrer">🚇 네이버지도 길찾기</a>
+        `;
+
+        // 7. 모달 열기
+        document.getElementById('placeDetailModalOverlay').classList.add('open');
+
+        // 8. 백엔드 추가 상세 정보 비동기 호출
+        fetchPlaceExtraDetail(place);
+    }
+
+    function closePlaceDetailModal() {
+        const overlay = document.getElementById('placeDetailModalOverlay');
+        if (overlay) {
+            overlay.classList.remove('open');
+        }
+        if (placeDetailAbortController) {
+            placeDetailAbortController.abort();
+            placeDetailAbortController = null;
+        }
+    }
+
+    function handleModalOverlayClick(event) {
+        if (event.target && event.target.id === 'placeDetailModalOverlay') {
+            closePlaceDetailModal();
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closePlaceDetailModal();
+        }
+    });
 
     function toggleSidebar(id, btn) {
         const el = document.getElementById(id);
@@ -635,6 +1547,7 @@
     function renderCategorizedRecommendations(filterKey = 'ALL') {
         activeCategoryFilter = filterKey;
 
+        clearHighlightedPlaceMarker();
         recommendMarkers.forEach(rm => rm.setMap(null));
         recommendMarkers = [];
 
@@ -679,31 +1592,20 @@
                 const rMarker = new kakao.maps.Marker({ map: map, position: pPos, title: p.place_name });
                 recommendMarkers.push(rMarker);
 
-                const subCategory = p.category_name.split('>').pop().trim();
+                const subCategory = (p.category_name || '').split('>').pop().trim() || '기타';
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'rec-item';
                 itemDiv.innerHTML = `
-                    <strong>${idx + 1}. ${p.place_name}</strong><br>
-                    <span style="color:#666;font-size:11px;">${subCategory} · 중심역에서 ${p.distance}m</span>
+                    <strong>${idx + 1}. ${escapeHtml(p.place_name)}</strong><br>
+                    <span style="color:#666;font-size:11px;">${escapeHtml(subCategory)} · 중심역에서 ${escapeHtml(p.distance)}m</span>
                 `;
 
-                itemDiv.onclick = function() {
-                    document.querySelectorAll('.rec-item').forEach(el => el.classList.remove('active'));
-                    itemDiv.classList.add('active');
-                    map.panTo(pPos);
-                    infowindow.setContent(`<div class="iw-box">${p.place_name}</div>`);
-                    infowindow.open(map, rMarker);
-
-                    document.getElementById('placeDetailArea').innerHTML = `
-                        <div><b>테마 분류:</b> ${group.title}</div>
-                        <div><b>상호명:</b> ${p.place_name}</div>
-                        <div><b>세부 업종:</b> ${p.category_name}</div>
-                        <div><b>주소:</b> ${p.road_address_name || p.address_name}</div>
-                        <div><b>전화:</b> ${p.phone || '없음'}</div>
-                        <div><b>거리:</b> ${currentSelectedAreaName}에서 ${p.distance}m</div>
-                        <div style="margin-top:6px;"><a href="${p.place_url}" target="_blank" style="color:#2563eb;font-weight:bold;">카카오맵 상세보기 →</a></div>
-                    `;
+                const handleSelectPlace = function() {
+                    openPlaceDetail(p, group, rMarker, itemDiv);
                 };
+
+                itemDiv.onclick = handleSelectPlace;
+                kakao.maps.event.addListener(rMarker, 'click', handleSelectPlace);
                 section.appendChild(itemDiv);
             });
 
